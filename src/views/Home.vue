@@ -25,14 +25,14 @@
           span Draw: {{winCount.draw}}
         //- button(@click="predict") predict
         //- p(v-for="elm in output") {{elm}}
-      .side.left
-        .last-win(:class="{'is-show': lastWon === 'left'}") {{winComposed}}
-        .symbol {{symbols.left}}
-        .wincount WIN: {{winCount.left}}
       .side.right
         .last-win(:class="{'is-show': lastWon === 'right'}") {{winComposed}}
         .symbol {{symbols.right}}
         .wincount WIN: {{winCount.right}}
+      .side.left
+        .last-win(:class="{'is-show': lastWon === 'left'}") {{winComposed}}
+        .symbol {{symbols.left}}
+        .wincount WIN: {{winCount.left}}
       .bottom
         .team
           .single
@@ -244,11 +244,11 @@ export default {
   flex-direction: column;
   box-sizing: border-box;
   &.left {
-    border-right: 2px solid rgba(#fff, 0.1);
+    border-left: 2px solid rgba(#fff, 0.1);
     border-bottom: 4px solid rgba(red, 0.5);
   }
   &.right {
-    border-left: 2px solid rgba(#fff, 0.1);
+    border-right: 2px solid rgba(#fff, 0.1);
     border-bottom: 4px solid rgba(blue, 0.5);
   }
   .last-win {
@@ -393,5 +393,6 @@ export default {
   width: auto;
   max-width: 100%;
   height: 100%;
+  transform: rotateY(180deg);
 }
 </style>
