@@ -19,6 +19,9 @@
             span(v-if="countdown.predict <= 3000 && countdown.predict > 2000") 3
             span(v-if="countdown.predict <= 2000") {{countdown.predict / 1000}}
         .draw-count
+          span(v-if="!status.ready")
+            | Initializing...
+            br
           span Draw: {{winCount.draw}}
         //- button(@click="predict") predict
         //- p(v-for="elm in output") {{elm}}
@@ -74,26 +77,29 @@ export default {
     interval: {}
   }),
   created () {
-    this.interval = setInterval(() => {
-      this.countdown[this.turn] = this.countdown[this.turn] - 100
-      if (this.countdown[this.turn] === 2000 && this.turn === 'predict') {
-        this.lastWon = ''
-      }
-      if (this.countdown[this.turn] === 0 && this.turn === 'predict') {
-        this.turn = 'cooldown'
-        this.countdown[this.turn] = cooldownLength
-        this.predict()
-      } else if (this.countdown[this.turn] === 0 && this.turn === 'cooldown') {
-        this.turn = 'predict'
-        this.countdown[this.turn] = captureEvery
-      }
-    }, 100)
-    this.countdown.predict = captureEvery
+
   },
   async mounted () {
     await this.videoSetup()
   },
   methods: {
+    setLoop () {
+      this.interval = setInterval(() => {
+        this.countdown[this.turn] = this.countdown[this.turn] - 100
+        if (this.countdown[this.turn] === 2000 && this.turn === 'predict') {
+          this.lastWon = ''
+        }
+        if (this.countdown[this.turn] === 0 && this.turn === 'predict') {
+          this.turn = 'cooldown'
+          this.countdown[this.turn] = cooldownLength
+          this.predict()
+        } else if (this.countdown[this.turn] === 0 && this.turn === 'cooldown') {
+          this.turn = 'predict'
+          this.countdown[this.turn] = captureEvery
+        }
+      }, 100)
+      this.countdown.predict = captureEvery
+    },
     async videoSetup () {
       const video = document.querySelector('#videoElement')
       if (navigator.mediaDevices.getUserMedia) {
@@ -107,6 +113,7 @@ export default {
       }
       this.model = await tf.loadModel(modelPath)
       this.model.summary()
+      this.setLoop()
       this.status.ready = true
     },
     capture () {
