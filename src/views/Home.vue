@@ -59,7 +59,7 @@
             img.avatar(src="team/pao.jpg")
             .name
               h4 Pongsathorn Supphakosol
-              h5 58130500218
+              h5 59130500218
 </template>
 
 <script>
