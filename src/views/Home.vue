@@ -33,12 +33,38 @@
         .last-win(:class="{'is-show': lastWon === 'right'}") {{winComposed}}
         .symbol {{symbols.right}}
         .wincount WIN: {{winCount.right}}
+      .bottom
+        .team
+          .single
+            img.avatar(src="team/kob.jpg")
+            .name
+              h4 Jukrapop Kongkaew
+              h5 58130500203
+          .single
+            img.avatar(src="team/son.jpg")
+            .name
+              h4 Chaiyapat Tantiworachot
+              h5 58130500208
+          .single
+            img.avatar(src="team/best.jpg")
+            .name
+              h4 Tharnandorn Sornpetch
+              h5 58130500252
+          .single
+            img.avatar(src="team/guy.jpg")
+            .name
+              h4 Thayakorn Wisutthisen
+              h5 59130500211
+          .single
+            img.avatar(src="team/pao.jpg")
+            .name
+              h4 Pongsathorn Supphakosol
+              h5 58130500218
 </template>
 
 <script>
 
-const modelPath = 'models/2018-11-25/model.json'
-const modelDim = 96
+const modelDim = 150
 
 const tf = window.tf
 
@@ -48,6 +74,7 @@ const cooldownLength = 5000
 export default {
   name: 'home',
   data: () => ({
+    modelPath: '',
     winComposed: '',
     winEmojis: ['🎉', '🎊', '🥳', '🍻', '👏', '🍾'],
     winWord: ['Hooray!', 'Superb!', 'Amazing!', 'WIN WIN WIN', 'WINNER WINNER CHICKEN DINNER', 'Congratz!'],
@@ -79,7 +106,7 @@ export default {
     interval: {}
   }),
   created () {
-
+    this.modelPath = `models/${this.$route.params.model}/model.json`
   },
   async mounted () {
     await this.videoSetup()
@@ -113,7 +140,7 @@ export default {
             console.error(error.stack)
           })
       }
-      this.model = await tf.loadModel(modelPath)
+      this.model = await tf.loadModel(this.modelPath)
       this.model.summary()
       this.setLoop()
       this.status.ready = true
@@ -300,6 +327,56 @@ export default {
     text-align: center;
     color: rgba(#fff, 0.8);
     text-shadow: 0px 1px 3px rgba(#000, 0.6);
+  }
+}
+
+.bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  opacity: 0.2;
+  transition: all 0.15s;
+  .team {
+    display: flex;
+    padding: 0 12px;
+    .single {
+      display: flex;
+      margin-right: 12px;
+      .avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 48px;
+        margin-right: 4px;
+        border: 2px solid rgba(#fff, 0.2);
+        transition: all 0.15s;
+      }
+      .name {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        h4, h5 {
+          margin: 0;
+          color: rgba(#fff, 0.8);
+          text-shadow: 0px 1px 3px rgba(#000, 0.6);
+        }
+        h4 {
+          font-size: 10px;
+        }
+        h5 {
+          font-size: 13px;
+        }
+      }
+    }
+  }
+  &:hover {
+    opacity: 1;
+    height: 72px;
+    .team .single .avatar {
+      width: 48px;
+      height: 48px;
+    }
   }
 }
 
