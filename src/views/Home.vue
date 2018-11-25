@@ -37,7 +37,9 @@
 
 <script>
 
-const modelPath = 'models/2018-11-04/model.json'
+const modelPath = 'models/2018-11-25/model.json'
+const modelDim = 96
+
 const tf = window.tf
 
 const captureEvery = 5000
@@ -67,7 +69,7 @@ export default {
       right: 0,
       draw: 0
     },
-    inputSize: 150,
+    inputSize: modelDim,
     output: [],
     model: {},
     symbols: {
@@ -126,8 +128,8 @@ export default {
       })
     },
     cropImage (img) {
-      const img1 = img.slice([0, 0, 0], [150, 150, 3])
-      const img2 = img.slice([0, 150, 0], [150, 150, 3])
+      const img1 = img.slice([0, 0, 0], [modelDim, modelDim, 3])
+      const img2 = img.slice([0, modelDim, 0], [modelDim, modelDim, 3])
       return [img1, img2]
     },
     predict () {
